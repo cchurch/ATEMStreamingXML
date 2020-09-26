@@ -11,92 +11,163 @@ import xml.etree.ElementTree as ET
 
 __version__ = '0.1.0'
 
-ATEM_STREAMING_XML_DEFAULT = os.path.join('/Library', 'Application Support', 'Blackmagic Design', 'Switchers', 'Streaming.xml')
-ATEM_STREAMING_XML = os.environ.get('ATEM_STREAMING_XML', ATEM_STREAMING_XML_DEFAULT)
+
+def get_streaming_xml_path():
+    if sys.platform == 'darwin':
+        default_path = os.path.join('/Library', 'Application Support', 'Blackmagic Design', 'Switchers', 'Streaming.xml')
+    elif sys.platform == 'win32':  # pragma: no cover
+        raise NotImplementedError
+    else:  # pragma: no cover
+        raise RuntimeError('unsupported platform: {}'.format(sys.platform))
+    return os.environ.get('ATEM_STREAMING_XML', default_path)
 
 
-def create_default_profiles(profiles_element):
-    default_profiles = [
-        dict(name='Streaming High', configs=[(60, 9000000), (30, 6000000)]),
-        dict(name='Streaming Medium', configs=[(60, 7000000), (30, 4500000)]),
-        dict(name='Streaming Low', configs=[(60, 4500000), (30, 3000000)]),
-    ]
-    for default_profile in default_profiles:
-        profile_element = ET.SubElement(profiles_element, 'profile')
-        name_element = ET.SubElement(profile_element, 'name')
-        name_element.text = default_profile['name']
-        for fps, bitrate in default_profile['configs']:
-            config_element = ET.SubElement(profile_element, 'config')
-            config_element.set('fps', '{}'.format(fps))
-            config_element.set('resultion', '1080p')
-            bitrate_element = ET.SubElement(config_element, 'bitrate')
-            bitrate_element.text = '{}'.format(bitrate)
-            keyframe_interval_element = ET.SubElement(config_element, 'keyframe-interval')
-            keyframe_interval_element.text = '2'
+def find_sub_element_by_name(parent_element, child_tag, name_text, name_tag='name'):
+    for sub_element in parent_element.findall(child_tag):
+        name_element = sub_element.find(name_tag)
+        if name_element is not None and name_element.text == name_text:
+            return sub_element
 
 
-def modify_service_element(service_element, **kwargs):
-    server_name = kwargs.get('server_name', None)
-    if not server_name:
+def create_or_update_sub_element(parent_element, child_tag, text=None):
+    sub_element = parent_element.find(child_tag)
+    if sub_element is None:
+        sub_element = ET.SubElement(parent_element, child_tag)
+    if text is not None:
+        text = '{}'.format(text)
+        if sub_element.text != text:
+            sub_element.text = text
+    return sub_element
+
+
+def create_sub_element(parent_element, child_tag, name_text=None, name_tag='name'):
+    sub_element = ET.SubElement(parent_element, child_tag)
+    if name_text is not None:  # pragma: no cover
+        create_or_update_sub_element(sub_element, name_tag, name_text)
+    return sub_element
+
+
+def get_or_create_config_element(profile_element, resolution, fps):
+    for config_element in profile_element.findall('config'):
+        if config_element.get('resolution') == resolution and config_element.get('fps') == fps:
+            return config_element
+        elif config_element.get('resultion') == resolution and config_element.get('fps') == fps:  # pragma: no cover
+            config_element.attrib.pop('resultion')
+            config_element.set('resolution', resolution)
+            return config_element
+    config_element = ET.SubElement(profile_element, 'config')
+    config_element.set('resolution', resolution)
+    config_element.set('fps', fps)
+    return config_element
+
+
+def update_profile_element(profile_element, **kwargs):
+    profile_name = kwargs.get('profile_name')
+    create_or_update_sub_element(profile_element, 'name', profile_name)
+    profile_config = kwargs.get('profile_config')
+    if not profile_config:
         return
-    server_url = kwargs.get('server_url', None)
-    remove_server = kwargs.get('remove_server', False)
-    servers_element = service_element.find('servers')
-    if servers_element is None:
-        servers_element = ET.SubElement(service_element, 'servers')
-    server_element = None
-    for _server_element in servers_element.findall('server'):
-        _name_element = _server_element.find('name')
-        if _name_element is not None and _name_element.text == server_name:
-            server_element = _server_element
-            break
-    if remove_server:
-        if server_element is not None:
-            servers_element.remove(server_element)
-        return
-    if server_element is None:
-        server_element = ET.SubElement(servers_element, 'server')
-    name_element = server_element.find('name')
-    if name_element is None:
-        name_element = ET.SubElement(server_element, 'name')
-    if name_element.text != server_name:
-        name_element.text = server_name
-    url_element = server_element.find('url')
-    if url_element is None:
-        url_element = ET.SubElement(server_element, 'url')
-    if server_url and url_element.text != server_url:
-        url_element.text = server_url
+    elif profile_config in ('1080p60', '1080p30'):
+        resolution, fps = profile_config[:5], profile_config[-2:]
+    else:  # pragma: no cover
+        raise ValueError('invalid profile config: {}'.format(profile_config))
+    config_element = get_or_create_config_element(profile_element, resolution, fps)
+    if kwargs.get('remove_config', False):
+        profile_element.remove(config_element)
+        return profile_element
+    bitrate = kwargs.get('bitrate')
+    if bitrate is not None:
+        if bitrate > 0:
+            create_or_update_sub_element(config_element, 'bitrate', bitrate)
+        else:
+            bitrate_element = config_element.find('bitrate')
+            if bitrate_element is not None:
+                config_element.remove(bitrate_element)
+    audio_bitrate = kwargs.get('audio_bitrate')
+    if audio_bitrate is not None:
+        if audio_bitrate > 0:
+            create_or_update_sub_element(config_element, 'audio-bitrate', audio_bitrate)
+        else:
+            audio_bitrate_element = config_element.find('audio-bitrate')
+            if audio_bitrate_element is not None:
+                config_element.remove(audio_bitrate_element)
+    keyframe_interval = kwargs.get('keyframe_interval')
+    if keyframe_interval is not None:
+        if keyframe_interval > 0:
+            create_or_update_sub_element(config_element, 'keyframe-interval', keyframe_interval)
+        else:
+            keyframe_interval_element = config_element.find('keyframe-interval')
+            if keyframe_interval_element is not None:
+                config_element.remove(keyframe_interval_element)
+    return profile_element
 
 
-def modify_streaming_element(streaming_element, **kwargs):
-    service_name = kwargs.get('service_name', None)
-    remove_service = kwargs.get('remove_service', False)
+def update_server_element(server_element, **kwargs):
+    create_or_update_sub_element(server_element, 'name', kwargs.get('server_name'))
+    create_or_update_sub_element(server_element, 'url', kwargs.get('server_url'))
+    return server_element
+
+
+def update_service_element(service_element, **kwargs):
+    servers_element = create_or_update_sub_element(service_element, 'servers')
+    server_name = kwargs.get('server_name')
+    if server_name:
+        server_element = find_sub_element_by_name(servers_element, 'server', server_name)
+        if kwargs.get('remove_server', False):
+            if server_element is not None:
+                servers_element.remove(server_element)
+        else:
+            if server_element is None:
+                server_element = create_sub_element(servers_element, 'server', server_name)
+            update_server_element(server_element, **kwargs)
+    profiles_element = create_or_update_sub_element(service_element, 'profiles')
+    if kwargs.get('default_profiles', False):
+        profiles_list = [
+            dict(profile_name='Streaming High', profile_config='1080p60', bitrate=9000000),
+            dict(profile_name='Streaming High', profile_config='1080p30', bitrate=6000000),
+            dict(profile_name='Streaming Medium', profile_config='1080p60', bitrate=7000000),
+            dict(profile_name='Streaming Medium', profile_config='1080p30', bitrate=4500000),
+            dict(profile_name='Streaming Low', profile_config='1080p60', bitrate=4500000),
+            dict(profile_name='Streaming Low', profile_config='1080p30', bitrate=3000000),
+        ]
+        for profile_kwargs in profiles_list:
+            profile_kwargs.setdefault('audio_bitrate', 128000)
+            profile_kwargs.setdefault('keyframe_interval', 2)
+    elif kwargs.get('profile_name'):
+        profiles_list = [kwargs]
+    else:
+        profiles_list = []
+    for profile_kwargs in profiles_list:
+        profile_name = profile_kwargs.get('profile_name')
+        profile_element = find_sub_element_by_name(profiles_element, 'profile', profile_name)
+        if kwargs.get('remove_profile', False):
+            if profile_element is not None:
+                profiles_element.remove(profile_element)
+        else:
+            if profile_element is None:
+                profile_element = create_sub_element(profiles_element, 'profile', profile_name)
+            update_profile_element(profile_element, **profile_kwargs)
+    return service_element
+
+
+def update_streaming_element(streaming_element, **kwargs):
     assert streaming_element.tag == 'streaming'
-    service_element = None
-    for _service_element in streaming_element.findall('service'):
-        _name_element = _service_element.find('name')
-        if _name_element is not None and _name_element.text == service_name:
-            service_element = _service_element
-            break
-    if remove_service:
+    service_name = kwargs.get('service_name')
+    service_element = find_sub_element_by_name(streaming_element, 'service', service_name)
+    if kwargs.get('remove_service', False):
         if service_element is not None:
             streaming_element.remove(service_element)
-        return
-    if service_element is None:
-        service_element = ET.SubElement(streaming_element, 'service')
-        name_element = ET.SubElement(service_element, 'name')
-        name_element.text = service_name
-        servers_element = ET.SubElement(service_element, 'servers')
-        profiles_element = ET.SubElement(service_element, 'profiles')
-        create_default_profiles(profiles_element)
-    modify_service_element(service_element, **kwargs)
+    else:
+        if service_element is None:
+            service_element = create_sub_element(streaming_element, 'service', service_name)
+        update_service_element(service_element, **kwargs)
 
 
 def update_xml_indentation(element, text='\n\t', tail=''):
     if len(element):
         assert not (element.text or '').strip()  # Make sure there's no extra text except for whitespace.
         element.text = text
-        element.tail = tail
+        element.tail = (element.tail or '').rstrip() + tail
         for n, child_element in enumerate(element):
             child_text = text + '\t'
             if n == (len(element) - 1):
@@ -107,36 +178,36 @@ def update_xml_indentation(element, text='\n\t', tail=''):
                 child_tail = '\n' + text
             update_xml_indentation(child_element, child_text, child_tail)
     else:
-        element.tail = tail
+        element.tail = (element.tail or '').rstrip() + tail
 
 
 def update_streaming_xml(**kwargs):
     parser = kwargs.get('parser', None)
     dry_run = kwargs.get('dry_run', False)
-    tree = ET.parse(ATEM_STREAMING_XML)
+    tree = ET.parse(get_streaming_xml_path())
     streaming_element = tree.getroot()
     original_xml = ET.tostring(streaming_element, encoding='UTF-8').decode('UTF-8')
     original_lines = original_xml.splitlines(True)
 
-    modify_streaming_element(streaming_element, **kwargs)
+    update_streaming_element(streaming_element, **kwargs)
     update_xml_indentation(streaming_element)
 
-    modified_xml = ET.tostring(streaming_element, encoding='UTF-8').decode('UTF-8')
-    modified_lines = modified_xml.splitlines(True)
-    for line in difflib.context_diff(original_lines, modified_lines, fromfile='Streaming-old.xml', tofile='Streaming-new.xml'):
+    updated_xml = ET.tostring(streaming_element, encoding='UTF-8').decode('UTF-8')
+    updated_lines = updated_xml.splitlines(True)
+    for line in difflib.context_diff(original_lines, updated_lines, fromfile='Streaming-old.xml', tofile='Streaming-new.xml'):
         print(line.rstrip('\n'))
 
     if not dry_run:
         try:
-            tree.write(ATEM_STREAMING_XML, encoding='UTF-8', xml_declaration=True)
-        except OSError as e:
+            tree.write(get_streaming_xml_path(), encoding='UTF-8', xml_declaration=True)
+        except OSError as e:  # pragma: no cover
             if e.errno == errno.EACCES:
                 parser.exit(e.errno, '{}\nMaybe you need to run with sudo?'.format(e))
             else:
                 parser.exit(e.errno, '{}'.format(e))
 
 
-def main():
+def main(*args):
     parser = argparse.ArgumentParser(description='Modify ATEM Mini Pro Streaming.xml.')
     parser.add_argument(
         '-S',
@@ -144,14 +215,14 @@ def main():
         dest='service_name',
         metavar='SERVICE',
         required=True,
-        help='Streaming service name',
+        help='Streaming service name to update/remove',
     )
     parser.add_argument(
         '-N',
         '--server-name',
         dest='server_name',
         metavar='SERVER_NAME',
-        help='Streaming server name',
+        help='Streaming server name to update/remove',
     )
     parser.add_argument(
         '-U',
@@ -159,6 +230,48 @@ def main():
         dest='server_url',
         metavar='SERVER_URL',
         help='Streaming server RTMP URL',
+    )
+    parser.add_argument(
+        '--default-profiles',
+        dest='default_profiles',
+        action='store_true',
+        default=False,
+        help='Create or update default profiles for a streaming service',
+    )
+    parser.add_argument(
+        '-P',
+        '--profile-name',
+        dest='profile_name',
+        metavar='PROFILE_NAME',
+        help='Streaming profile name to update/remove',
+    )
+    parser.add_argument(
+        '-C',
+        '--profile-config',
+        dest='profile_config',
+        choices=['1080p60', '1080p30'],
+        help='Streaming profile config resolution and frame rate to update/remove',
+    )
+    parser.add_argument(
+        '--br',
+        '--bitrate',
+        dest='bitrate',
+        type=int,
+        help='Streaming profile config bitrate',
+    )
+    parser.add_argument(
+        '--abr',
+        '--audio-bitrate',
+        dest='audio_bitrate',
+        type=int,
+        help='Streaming profile config audio bitrate',
+    )
+    parser.add_argument(
+        '--ki',
+        '--keyframe-interval',
+        dest='keyframe_interval',
+        type=int,
+        help='Streaming profile config keyframe interval',
     )
     parser.add_argument(
         '--remove',
@@ -176,6 +289,20 @@ def main():
         help='Remove streaming server from a service',
     )
     parser.add_argument(
+        '--remove-profile',
+        dest='remove_profile',
+        action='store_true',
+        default=False,
+        help='Remove streaming profile from a service',
+    )
+    parser.add_argument(
+        '--remove-config',
+        dest='remove_config',
+        action='store_true',
+        default=False,
+        help='Remove streaming profile config from a profile',
+    )
+    parser.add_argument(
         '-n',
         '--dry-run',
         dest='dry_run',
@@ -183,10 +310,19 @@ def main():
         default=False,
         help='Show changes that would be made',
     )
-    args = parser.parse_args()
-    if args.server_name and not (args.server_url or args.remove_server):
+    ns = parser.parse_args(args or None)
+    if ns.server_name and not (ns.server_url or ns.remove_server):
         parser.error('The --server-name option requires either --server-url or --remove-server')
-    kwargs = dict(vars(args), parser=parser)
+    if ns.remove_server and not ns.server_name:
+        parser.error('The --remove-server option requires --server-name')
+    if ns.remove_profile and not ns.profile_name:
+        parser.error('The --remove-profile option requires --profile-name')
+    if ns.profile_config and not ns.profile_name:
+        parser.error('The --profile-config option requires --profile-name')
+    if ns.remove_config and not ns.profile_config:
+        parser.error('The --remove-config option requires --profile-config')
+
+    kwargs = dict(vars(ns), parser=parser)
     update_streaming_xml(**kwargs)
 
 

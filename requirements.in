@@ -6,3 +6,4 @@ pytest-cov
 pytest-flake8
 pytest-runner
 tox
+xmltodict

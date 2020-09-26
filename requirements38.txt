@@ -29,3 +29,4 @@ six==1.15.0               # via packaging, tox, virtualenv
 toml==0.10.1              # via pytest, tox
 tox==3.20.0               # via -r requirements.in
 virtualenv==20.0.31       # via tox
+xmltodict==0.12.0         # via -r requirements.in

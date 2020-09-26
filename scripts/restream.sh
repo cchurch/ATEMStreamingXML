@@ -1,3 +1,3 @@
 #!/bin/sh
 
-sudo ATEMStreamingXML -S Restream -N Autodetect -U rtmp://live.restream.io/live
+sudo ATEMStreamingXML -S Restream -N Autodetect -U rtmp://live.restream.io/live --default-profiles
