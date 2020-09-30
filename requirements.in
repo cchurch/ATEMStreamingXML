@@ -1,9 +1,13 @@
 autodotenv
+bumpversion
 coverage
 flake8
+pip-tools
 pycodestyle
 pytest-cov
 pytest-flake8
 pytest-runner
 tox
+twine
+wheel
 xmltodict

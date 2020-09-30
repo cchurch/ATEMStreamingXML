@@ -1,5 +1,6 @@
 # Python
 import contextlib
+import json
 import os
 import shutil
 
@@ -23,7 +24,7 @@ def main():
 
 @pytest.fixture
 def tmp_streaming_xml(tmp_path):
-    tmp_file = tmp_path / 'Streaming.xml'
+    tmp_file = os.path.join(str(tmp_path), 'Streaming.xml')
     os.environ['ATEM_STREAMING_XML'] = str(tmp_file)
     try:
         yield tmp_file
@@ -45,8 +46,11 @@ def xml_compare(tmp_streaming_xml):
         finally:
             # Verify structure, not exact content.
             actual_data = xmltodict.parse(open(tmp_streaming_xml).read())
+            actual_data = json.loads(json.dumps(actual_data, indent=4))
             expected_data = xmltodict.parse(open(after_file).read())
+            expected_data = json.loads(json.dumps(expected_data, indent=4))
             assert actual_data == expected_data
+
     return compare
 
 

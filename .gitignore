@@ -5,3 +5,5 @@ dist/
 *.egg-info/
 .env
 .coverage
+.tox
+reports/
