@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<streaming>
+	<service>
+		<name>Facebook</name>
+		<servers>
+			<server>
+				<name>Default</name>
+				<url>rtmps://live-api-s.facebook.com:443/rtmp</url>
+			</server>
+		</servers>
+		<profiles>
+			<profile>
+				<name>Streaming High</name>
+				<config resolution="1080p" fps="60">      <!-- profile used for 1080p50/59/60 -->
+					<bitrate>9000000</bitrate>            <!-- video bitrate in bits per second -->
+					<audio-bitrate>128000</audio-bitrate>   <!-- audio bitrate in bits per second -->
+				</config>
+				<config resolution="1080p" fps="30">      <!-- profile used for 1080p23/24/25/29/30 -->
+					<bitrate>6000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+				</config>
+			</profile>
+			<profile>
+				<name>Streaming Medium</name>
+				<config resolution="1080p" fps="60">
+					<bitrate>7000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+				</config>
+				<config resolution="1080p" fps="30">
+					<bitrate>4500000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+				</config>
+			</profile>
+			<profile>
+				<name>Streaming Low</name>
+				<config resolution="1080p" fps="60">
+					<bitrate>4000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+				</config>
+				<config resolution="1080p" fps="30">
+					<bitrate>3000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+				</config>
+			</profile>
+		</profiles>
+<!-- RTMP session username and password, if required by service
+        <credentials>
+            <username>test</username>
+            <password>abc123xyz</password>
+        </credentials>
+-->
+	</service>
+
+	<service>
+		<name>Twitch</name>
+		<servers>
+			<server>
+				<name>Auto</name>
+				<url>rtmp://live.twitch.tv/app/</url>
+			</server>
+			<server>
+				<name>Asia: Hong Kong</name>
+				<url>rtmp://live-hkg.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Asia: Seoul, South Korea (1)</name>
+				<url>rtmp://live-sel01.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Asia: Seoul, South Korea (3)</name>
+				<url>rtmp://live-sel03.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Asia: Singapore</name>
+				<url>rtmp://live-sin.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Asia: Taipei, Taiwan (1)</name>
+				<url>rtmp://live-tpe01.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Asia: Taipei, Taiwan (3)</name>
+				<url>rtmp://live-tpe03.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Asia: Thailand: Bangkok</name>
+				<url>rtmp://live-bkk.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Asia: Tokyo, Japan</name>
+				<url>rtmp://live-tyo.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Australia: Sydney</name>
+				<url>rtmp://live-syd.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Europe: Austria, Vienna</name>
+				<url>rtmp://live-vie.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Europe: Copenhagen, Denmark</name>
+				<url>rtmp://live-cph.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Europe: Czech Republic, Prague</name>
+				<url>rtmp://live-prg.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Europe: Germany, Berlin</name>
+				<url>rtmp://live-ber.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Europe: Germany, Frankfurt (2)</name>
+				<url>rtmp://live-fra02.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Europe: Germany, Frankfurt (5)</name>
+				<url>rtmp://live-fra05.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Europe: Finland, Helsinki</name>
+				<url>rtmp://live-hel.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Europe: France, Marseille</name>
+				<url>rtmp://live-mrs.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Europe: France, Paris</name>
+				<url>rtmp://live-cdg.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Europe: Italy, Milan</name>
+				<url>rtmp://live-mil.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Europe: Netherlands, Amsterdam</name>
+				<url>rtmp://live-ams.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Europe: Norway, Oslo</name>
+				<url>rtmp://live-osl.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Europe: Poland, Warsaw</name>
+				<url>rtmp://live-waw.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Europe: Spain, Madrid</name>
+				<url>rtmp://live-mad.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Europe: Sweden, Stockholm</name>
+				<url>rtmp://live-arn.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Europe: UK, London (3)</name>
+				<url>rtmp://live-lhr03.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Europe: UK, London (4)</name>
+				<url>rtmp://live-lhr04.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>NA: Quebec, Canada</name>
+				<url>rtmp://live-ymq.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>NA: Toronto, Canada</name>
+				<url>rtmp://live-yto.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>NA: Queretaro, Mexico</name>
+				<url>rtmp://live-qro.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>US Central: Dallas, TX</name>
+				<url>rtmp://live-dfw.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>US Central: Denver, CO</name>
+				<url>rtmp://live-den.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>US Central: Houston, TX</name>
+				<url>rtmp://live-hou.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>US East: Ashburn, VA (3)</name>
+				<url>rtmp://live-iad03.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>US East: Ashburn, VA (5)</name>
+				<url>rtmp://live-iad05.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>US East: Atlanta, GA</name>
+				<url>rtmp://live-atl.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>US East: Chicago (2)</name>
+				<url>rtmp://live-ord02.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>US East: Chicago (3)</name>
+				<url>rtmp://live-ord03.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>US East: Miami, FL</name>
+				<url>rtmp://live-mia.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>US East: New York, NY</name>
+				<url>rtmp://live-jfk.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>US West: Los Angeles, CA</name>
+				<url>rtmp://live-lax.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>US West: Phoenix, AZ</name>
+				<url>rtmp://live-phx.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>US West: Portland, Oregon</name>
+				<url>rtmp://live-pdx.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Salt Lake City, UT</name>
+				<url>rtmp://live-slc.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>US West: San Francisco, CA</name>
+				<url>rtmp://live-sfo.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>US West: San Jose,CA</name>
+				<url>rtmp://live-sjc.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>Seattle, WA</name>
+				<url>rtmp://live-sea.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>South America: Rio de Janeiro, Brazil</name>
+				<url>rtmp://live-rio.twitch.tv/app</url>
+			</server>
+			<server>
+				<name>South America: Sao Paulo, Brazil</name>
+				<url>rtmp://live-sao.twitch.tv/app</url>
+			</server>
+		</servers>
+		<profiles>
+			<profile>
+				<name>Streaming High</name>
+				<config resolution="1080p" fps="60">
+					<bitrate>8000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+				<config resolution="1080p" fps="30">
+					<bitrate>6000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+			</profile>
+			<profile>
+				<name>Streaming Medium</name>
+				<config resolution="1080p" fps="60">
+					<bitrate>6000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+				<config resolution="1080p" fps="30">
+					<bitrate>4500000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+			</profile>
+			<profile>
+				<name>Streaming Low</name>
+				<config resolution="1080p" fps="60">
+					<bitrate>4000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+				<config resolution="1080p" fps="30">
+					<bitrate>3000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+			</profile>
+		</profiles>
+	</service>
+	
+	<service>
+		<name>YouTube</name>
+		<servers>
+			<server>
+				<name>Primary</name>
+				<url>rtmp://a.rtmp.youtube.com/live2</url>
+			</server>
+			<server>
+				<name>Secondary</name>
+				<url>rtmp://b.rtmp.youtube.com/live2?backup=1</url>
+			</server>
+		</servers>
+		<profiles>
+			<profile>
+				<name>Streaming High</name>
+				<config resolution="1080p" fps="60">
+					<bitrate>9000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+				<config resolution="1080p" fps="30">
+					<bitrate>6000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+			</profile>
+			<profile>
+				<name>Streaming Medium</name>
+				<config resolution="1080p" fps="60">
+					<bitrate>7000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+				<config resolution="1080p" fps="30">
+					<bitrate>4500000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+			</profile>
+			<profile>
+				<name>Streaming Low</name>
+				<config resolution="1080p" fps="60">
+					<bitrate>4500000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+				<config resolution="1080p" fps="30">
+					<bitrate>3000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+			</profile>
+		</profiles>
+	</service>
+
+	<service>
+		<name>Twitter / Periscope</name>
+		<servers>
+			<server>
+				<name>Asia Pacific (Tokyo)</name>
+				<url>rtmp://jp.pscp.tv:80/x</url>
+			</server>
+			<server>
+				<name>Asia Pacific (Seoul)</name>
+				<url>rtmp://kr.pscp.tv:80/x</url>
+			</server>
+			<server>
+				<name>Asia Pacific (Mumbai)</name>
+				<url>rtmp://in.pscp.tv:80/x</url>
+			</server>
+			<server>
+				<name>Asia Pacific (Singapore)</name>
+				<url>rtmp://sg.pscp.tv:80/x</url>
+			</server>
+			<server>
+				<name>Asia Pacific (Sydney)</name>
+				<url>rtmp://au.pscp.tv:80/x</url>
+			</server>
+			<server>
+				<name>Canada (Central)</name>
+				<url>rtmp://va.pscp.tv:80/x</url>
+			</server>
+			<server>
+				<name>EU (Frankfurt)</name>
+				<url>rtmp://de.pscp.tv:80/x</url>
+			</server>
+			<server>
+				<name>EU (Ireland)</name>
+				<url>rtmp://ie.pscp.tv:80/x</url>
+			</server>
+			<server>
+				<name>South America (São Paulo)</name>
+				<url>rtmp://br.pscp.tv:80/x</url>
+			</server>
+			<server>
+				<name>US East (N. Virginia)</name>
+				<url>rtmp://va.pscp.tv:80/x</url>
+			</server>
+			<server>
+				<name>US East (Ohio)</name>
+				<url>rtmp://va.pscp.tv:80/x</url>
+			</server>
+			<server>
+				<name>US West (Oregon)</name>
+				<url>rtmp://or.pscp.tv:80/x</url>
+			</server>
+			<server>
+				<name>US West (N. California)</name>
+				<url>rtmp://ca.pscp.tv:80/x</url>
+			</server>
+		</servers>
+		<profiles>
+			<profile>
+				<name>Streaming High</name>
+				<config resolution="1080p" fps="60">
+					<bitrate>4000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+				</config>
+				<config resolution="1080p" fps="30">
+					<bitrate>4000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+				</config>
+			</profile>
+			<profile>
+				<name>Streaming Medium</name>
+				<config resolution="1080p" fps="60">
+					<bitrate>3500000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+				</config>
+				<config resolution="1080p" fps="30">
+					<bitrate>3000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+				</config>
+			</profile>
+			<profile>
+				<name>Streaming Low</name>
+				<config resolution="1080p" fps="60">
+					<bitrate>3000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+				</config>
+				<config resolution="1080p" fps="30">
+					<bitrate>2500000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+				</config>
+			</profile>
+		</profiles>
+	</service>
+
+	<service>
+		<name>Restream.IO</name>
+		<servers>
+			<server>
+				<name>Autodetect</name>
+				<url>rtmp://live.restream.io/live</url>
+			</server>
+			<server>
+				<name>EU-West (London, GB)</name>
+				<url>rtmp://london.restream.io/live</url>
+			</server>
+			<server>
+				<name>EU-West (Amsterdam, NL)</name>
+				<url>rtmp://amsterdam.restream.io/live</url>
+			</server>
+			<server>
+				<name>EU-West (Luxembourg)</name>
+				<url>rtmp://luxembourg.restream.io/live</url>
+			</server>
+			<server>
+				<name>EU-West (Paris, FR)</name>
+				<url>rtmp://paris.restream.io/live</url>
+			</server>
+			<server>
+				<name>EU-West (Milan, IT)</name>
+				<url>rtmp://milan.restream.io/live</url>
+			</server>
+			<server>
+				<name>EU-Central (Frankfurt, DE)</name>
+				<url>rtmp://frankfurt.restream.io/live</url>
+			</server>
+			<server>
+				<name>EU-East (Falkenstein, DE)</name>
+				<url>rtmp://falkenstein.restream.io/live</url>
+			</server>
+			<server>
+				<name>EU-East (Prague, Czech)</name>
+				<url>rtmp://prague.restream.io/live</url>
+			</server>
+			<server>
+				<name>EU-South (Madrid, Spain)</name>
+				<url>rtmp://madrid.restream.io/live</url>
+			</server>
+			<server>
+				<name>Russia (Moscow)</name>
+				<url>rtmp://moscow.restream.io/live</url>
+			</server>
+			<server>
+				<name>Turkey (Istanbul)</name>
+				<url>rtmp://istanbul.restream.io/live</url>
+			</server>
+			<server>
+				<name>Israel (Tel Aviv)</name>
+				<url>rtmp://telaviv.restream.io/live</url>
+			</server>
+			<server>
+				<name>US-West (Seattle, WA)</name>
+				<url>rtmp://seattle.restream.io/live</url>
+			</server>
+			<server>
+				<name>US-West (San Jose, CA)</name>
+				<url>rtmp://sanjose.restream.io/live</url>
+			</server>
+			<server>
+				<name>US-Central (Dallas, TX)</name>
+				<url>rtmp://dallas.restream.io/live</url>
+			</server>
+			<server>
+				<name>US-East (Chicago, IL)</name>
+				<url>rtmp://chicago.restream.io/live</url>
+			</server>
+			<server>
+				<name>US-East (New York, NY)</name>
+				<url>rtmp://newyork.restream.io/live</url>
+			</server>
+			<server>
+				<name>US-East (Washington, DC)</name>
+				<url>rtmp://washington.restream.io/live</url>
+			</server>
+			<server>
+				<name>US-East (Miami, FL)</name>
+				<url>rtmp://miami.restream.io/live</url>
+			</server>
+			<server>
+				<name>NA-East (Toronto, Canada)</name>
+				<url>rtmp://toronto.restream.io/live</url>
+			</server>
+			<server>
+				<name>SA (Saint Paul, Brazil)</name>
+				<url>rtmp://saopaulo.restream.io/live</url>
+			</server>
+			<server>
+				<name>India (Bangalore)</name>
+				<url>rtmp://bangalore.restream.io/live</url>
+			</server>
+			<server>
+				<name>Asia (Singapore)</name>
+				<url>rtmp://singapore.restream.io/live</url>
+			</server>
+			<server>
+				<name>Asia (Seoul, South Korea)</name>
+				<url>rtmp://seoul.restream.io/live</url>
+			</server>
+			<server>
+				<name>Asia (Tokyo, Japan)</name>
+				<url>rtmp://tokyo.restream.io/live</url>
+			</server>
+			<server>
+				<name>Australia (Sydney)</name>
+				<url>rtmp://sydney.restream.io/live</url>
+			</server>
+		</servers>
+		<profiles>
+			<profile>
+				<name>Streaming High</name>
+				<config resolution="1080p" fps="60">
+					<bitrate>9000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+				<config resolution="1080p" fps="30">
+					<bitrate>6000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+			</profile>
+			<profile>
+				<name>Streaming Medium</name>
+				<config resolution="1080p" fps="60">
+					<bitrate>7000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+				<config resolution="1080p" fps="30">
+					<bitrate>4500000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+			</profile>
+			<profile>
+				<name>Streaming Low</name>
+				<config resolution="1080p" fps="60">
+					<bitrate>4500000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+				<config resolution="1080p" fps="30">
+					<bitrate>3000000</bitrate>
+					<audio-bitrate>128000</audio-bitrate>
+					<keyframe-interval>2</keyframe-interval>
+				</config>
+			</profile>
+		</profiles>
+	</service>
+
+</streaming>

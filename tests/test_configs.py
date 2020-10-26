@@ -3,7 +3,7 @@ import pytest
 
 
 def test_invalid_config(main, xml_compare, service_name, profile_name,):
-    with xml_compare('default-84.xml', 'default-84.xml'):
+    with xml_compare('empty.xml', 'empty.xml'):
         with pytest.raises(SystemExit):
             main('-S', service_name, '-P', profile_name, '-C', '1080i60')
 
@@ -15,7 +15,7 @@ def test_config_requires_profile_name(main, xml_compare, service_name, config_re
 
 
 def test_add_config(main, xml_compare, service_name, profile_name, config_resolution):
-    with xml_compare('default-84.xml', 'add-config.xml'):
+    with xml_compare('empty.xml', 'add-config.xml'):
         main('--service', service_name, '--profile-name', profile_name, '--profile-config', config_resolution)
 
 
@@ -35,7 +35,7 @@ def test_add_another_config_no_change(main, xml_compare, service_name, profile_n
 
 
 def test_add_config_bitrate(main, xml_compare, service_name, profile_name, config_resolution, config_bitrate):
-    with xml_compare('default-84.xml', 'add-config-bitrate.xml'):
+    with xml_compare('empty.xml', 'add-config-bitrate.xml'):
         main('--service', service_name, '--profile-name', profile_name, '--profile-config', config_resolution, '--bitrate', config_bitrate)
 
 
@@ -65,7 +65,7 @@ def test_remove_config_bitrate_no_change(main, xml_compare, service_name, profil
 
 
 def test_add_config_audio_bitrate(main, xml_compare, service_name, profile_name, config_resolution, config_audio_bitrate):
-    with xml_compare('default-84.xml', 'add-config-audio-bitrate.xml'):
+    with xml_compare('empty.xml', 'add-config-audio-bitrate.xml'):
         main('--service', service_name, '--profile-name', profile_name, '--profile-config', config_resolution, '--audio-bitrate', config_audio_bitrate)
 
 
@@ -95,7 +95,7 @@ def test_remove_config_audio_bitrate_no_change(main, xml_compare, service_name, 
 
 
 def test_add_config_keyframe_interval(main, xml_compare, service_name, profile_name, config_resolution, config_keyframe_interval):
-    with xml_compare('default-84.xml', 'add-config-keyframe-interval.xml'):
+    with xml_compare('empty.xml', 'add-config-keyframe-interval.xml'):
         main('--service', service_name, '--profile-name', profile_name, '--profile-config', config_resolution, '--keyframe-interval', config_keyframe_interval)
 
 

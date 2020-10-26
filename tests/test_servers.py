@@ -3,13 +3,13 @@ import pytest
 
 
 def test_server_name_requires_remove_or_url(main, xml_compare, service_name, server_name):
-    with xml_compare('default-84.xml', 'default-84.xml'):
+    with xml_compare('empty.xml', 'empty.xml'):
         with pytest.raises(SystemExit):
             main('--service', service_name, '--server-name', server_name)
 
 
 def test_add_server(main, xml_compare, service_name, server_name, server_url):
-    with xml_compare('default-84.xml', 'add-server.xml'):
+    with xml_compare('empty.xml', 'add-server.xml'):
         main('--service', service_name, '--server-name', server_name, '--server-url', server_url)
 
 

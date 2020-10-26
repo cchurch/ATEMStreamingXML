@@ -3,7 +3,7 @@ import pytest
 
 
 def test_default_profiles(main, xml_compare, service_name):
-    with xml_compare('default-84.xml', 'default-profiles.xml'):
+    with xml_compare('empty.xml', 'default-profiles.xml'):
         main('--service', service_name, '--default-profiles')
 
 
@@ -13,7 +13,7 @@ def test_default_profiles_no_change(main, xml_compare, service_name):
 
 
 def test_add_profile(main, xml_compare, service_name, profile_name):
-    with xml_compare('default-84.xml', 'add-profile.xml'):
+    with xml_compare('empty.xml', 'add-profile.xml'):
         main('--service', service_name, '--profile-name', profile_name)
 
 

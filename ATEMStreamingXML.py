@@ -16,7 +16,8 @@ def get_streaming_xml_path():
     if sys.platform == 'darwin':
         default_path = os.path.join('/Library', 'Application Support', 'Blackmagic Design', 'Switchers', 'Streaming.xml')
     elif sys.platform == 'win32':  # pragma: no cover
-        raise NotImplementedError
+        program_files_path = os.environ.get('ProgramFiles(x86)', os.environ.get('ProgramFiles'))
+        default_path = os.path.join(program_files_path, 'Blackmagic Design', 'Blackmagic ATEM Switchers', 'ATEM Software Control', 'Streaming.xml')
     else:  # pragma: no cover
         raise RuntimeError('unsupported platform: {}'.format(sys.platform))
     return os.environ.get('ATEM_STREAMING_XML', default_path)
@@ -200,9 +201,12 @@ def update_streaming_xml(**kwargs):
     if not dry_run:
         try:
             tree.write(get_streaming_xml_path(), encoding='UTF-8', xml_declaration=True)
-        except OSError as e:  # pragma: no cover
+        except (IOError, OSError) as e:  # pragma: no cover
             if e.errno == errno.EACCES:
-                parser.exit(e.errno, '{}\nMaybe you need to run with sudo?'.format(e))
+                if sys.platform == 'win32':
+                    parser.exit(e.errno, '{}\nTry running the command as an Administrator.'.format(e))
+                else:
+                    parser.exit(e.errno, '{}\nTry running the command with sudo.'.format(e))
             else:
                 parser.exit(e.errno, '{}'.format(e))
 
