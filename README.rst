@@ -45,6 +45,10 @@ Command Line Usage
   ``ATEM_STREAMING_XML``
     Specify an alternate path to the ``Streaming.xml`` file (used for unit tests)
 
+**Examples**
+
+  The `scripts <https://github.com/cchurch/ATEMStreamingXML/tree/master/scripts>`_ directory contains examples of command usage for alternate streaming services. 
+
 Caveats
 -------
 
@@ -52,7 +56,6 @@ Caveats
 * Does not allow reordering of streaming services, servers or profiles.
 * Does not save backup copy of original ``Streaming.xml``.
 * Requires running with ``sudo`` and will prompt accordingly if access is denied to modify the ``Streaming.xml``.
-* Only tested on OSX.
 
 
 .. |PyPI Version| image:: https://img.shields.io/pypi/v/ATEMStreamingXML.svg
