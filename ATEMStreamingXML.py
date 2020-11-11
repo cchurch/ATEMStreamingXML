@@ -10,7 +10,7 @@ import os
 import sys
 import xml.etree.ElementTree as ET
 
-__version__ = '0.1.2'
+__version__ = '0.1.3'
 
 
 def get_streaming_xml_path():
