@@ -1,4 +1,7 @@
+# -*- coding: UTF-8 -*-
+
 # Python
+from __future__ import unicode_literals
 import contextlib
 import json
 import os
@@ -71,7 +74,7 @@ def server_url():
 
 @pytest.fixture
 def alt_server_name():
-    return 'Backup'
+    return 'Bàckup'
 
 
 @pytest.fixture

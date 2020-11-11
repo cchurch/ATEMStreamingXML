@@ -8,7 +8,7 @@
 				<url>rtmp://primary.example.com/stream</url>
 			</server>
 			<server>
-				<name>Backup</name>
+				<name>Bàckup</name>
 				<url>rtmp://backup.example.com/stream</url>
 			</server>
 		</servers>

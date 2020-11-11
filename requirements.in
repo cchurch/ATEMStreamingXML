@@ -9,6 +9,7 @@ pytest-flake8
 pytest-runner
 setuptools-twine
 tox
+tox-gh-actions
 twine
 wheel
 xmltodict

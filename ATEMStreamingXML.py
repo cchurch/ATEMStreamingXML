@@ -1,7 +1,8 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 
 # Python
-from __future__ import print_function, with_statement
+from __future__ import print_function, with_statement, unicode_literals
 import argparse
 import difflib
 import errno
@@ -182,18 +183,34 @@ def update_xml_indentation(element, text='\n\t', tail=''):
         element.tail = (element.tail or '').rstrip() + tail
 
 
+def element_tostring(element, encoding=None, method=None):
+    class dummy:
+        pass
+
+    data = []
+    file = dummy()
+    file.write = data.append
+    ET.ElementTree(element).write(file, encoding, method=method)
+    if sys.version_info[0] == 2:  # pragma: no cover
+        data = [d.encode('UTF-8') if isinstance(d, unicode) else d for d in data[:]]  # noqa
+        return str('').join(data)
+    else:
+        return b''.join(data)
+
+
 def update_streaming_xml(**kwargs):
     parser = kwargs.get('parser', None)
     dry_run = kwargs.get('dry_run', False)
-    tree = ET.parse(get_streaming_xml_path())
+    xml_parser = ET.XMLParser(encoding='UTF-8')
+    tree = ET.parse(get_streaming_xml_path(), parser=xml_parser)
     streaming_element = tree.getroot()
-    original_xml = ET.tostring(streaming_element, encoding='UTF-8').decode('UTF-8')
+    original_xml = element_tostring(streaming_element, encoding='UTF-8').decode('UTF-8')
     original_lines = original_xml.splitlines(True)
 
     update_streaming_element(streaming_element, **kwargs)
     update_xml_indentation(streaming_element)
 
-    updated_xml = ET.tostring(streaming_element, encoding='UTF-8').decode('UTF-8')
+    updated_xml = element_tostring(streaming_element, encoding='UTF-8').decode('UTF-8')
     updated_lines = updated_xml.splitlines(True)
     for line in difflib.context_diff(original_lines, updated_lines, fromfile='Streaming-old.xml', tofile='Streaming-new.xml'):
         print(line.rstrip('\n'))

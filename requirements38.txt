@@ -5,12 +5,12 @@
 #    pip-compile --output-file=requirements38.txt requirements.in
 #
 appdirs==1.4.4            # via virtualenv
-attrs==20.2.0             # via pytest
-autodotenv==0.1.2         # via -r requirements.in
+attrs==20.3.0             # via pytest
+autodotenv==0.1.3         # via -r requirements.in
 bleach==3.2.1             # via readme-renderer
 bump2version==1.0.1       # via bumpversion
 bumpversion==0.6.0        # via -r requirements.in
-certifi==2020.6.20        # via requests
+certifi==2020.11.8        # via requests
 chardet==3.0.4            # via requests
 click==7.1.2              # via pip-tools
 colorama==0.4.4           # via twine
@@ -21,11 +21,11 @@ filelock==3.0.12          # via tox, virtualenv
 flake8==3.8.4             # via -r requirements.in, pytest-flake8
 idna==2.10                # via requests
 iniconfig==1.1.1          # via pytest
-keyring==21.4.0           # via twine
+keyring==21.5.0           # via twine
 mccabe==0.6.1             # via flake8
 packaging==20.4           # via bleach, pytest, tox
 pip-tools==5.3.1          # via -r requirements.in
-pkginfo==1.6.0            # via twine
+pkginfo==1.6.1            # via twine
 pluggy==0.13.1            # via pytest, tox
 py==1.9.0                 # via pytest, tox
 pycodestyle==2.6.0        # via -r requirements.in, flake8
@@ -35,19 +35,20 @@ pyparsing==2.4.7          # via packaging
 pytest-cov==2.10.1        # via -r requirements.in
 pytest-flake8==1.0.6      # via -r requirements.in
 pytest-runner==5.2        # via -r requirements.in
-pytest==6.1.1             # via pytest-cov, pytest-flake8
-python-dotenv==0.14.0     # via autodotenv
+pytest==6.1.2             # via pytest-cov, pytest-flake8
+python-dotenv==0.15.0     # via autodotenv
 readme-renderer==28.0     # via twine
 requests-toolbelt==0.9.1  # via twine
-requests==2.24.0          # via requests-toolbelt, twine
+requests==2.25.0          # via requests-toolbelt, twine
 rfc3986==1.4.0            # via twine
-setuptools-twine==0.1.2   # via -r requirements.in
+setuptools-twine==0.1.3   # via -r requirements.in
 six==1.15.0               # via bleach, packaging, pip-tools, readme-renderer, tox, virtualenv
-toml==0.10.1              # via pytest, tox
-tox==3.20.1               # via -r requirements.in
+toml==0.10.2              # via pytest, tox
+tox-gh-actions==2.1.0     # via -r requirements.in
+tox==3.20.1               # via -r requirements.in, tox-gh-actions
 tqdm==4.51.0              # via twine
 twine==3.2.0              # via -r requirements.in, setuptools-twine
-urllib3==1.25.11          # via requests
+urllib3==1.26.1           # via requests
 virtualenv==20.1.0        # via tox
 webencodings==0.5.1       # via bleach
 wheel==0.35.1             # via -r requirements.in
