@@ -1,4 +1,4 @@
-|PyPI Version| |Python Versions| |License|
+|Build Status| |PyPI Version| |Python Versions| |License|
 
 ATEMStreamingXML
 ================
@@ -58,6 +58,8 @@ Caveats
 * Requires running with ``sudo`` and will prompt accordingly if access is denied to modify the ``Streaming.xml``.
 
 
+.. |Build Status| image:: https://img.shields.io/github/workflow/status/cchurch/ATEMStreamingXML/test
+   :target: https://github.com/cchurch/ATEMStreamingXML/actions?query=workflow%3Atest
 .. |PyPI Version| image:: https://img.shields.io/pypi/v/ATEMStreamingXML.svg
    :target: https://pypi.python.org/pypi/ATEMStreamingXML
 .. |Python Versions| image:: https://img.shields.io/pypi/pyversions/ATEMStreamingXML.svg
