@@ -20,6 +20,7 @@ def get_streaming_xml_path():
         program_files_path = os.environ.get('ProgramFiles(x86)', os.environ.get('ProgramFiles'))
         default_path = os.path.join(program_files_path, 'Blackmagic Design', 'Blackmagic ATEM Switchers', 'ATEM Software Control', 'Streaming.xml')
     else:  # pragma: no cover
+        default_path = 'Streaming.xml'
         if os.environ.get('ATEM_STREAMING_XML', None) is None:
             raise RuntimeError('unsupported platform: {}'.format(sys.platform))
     return os.environ.get('ATEM_STREAMING_XML', default_path)
