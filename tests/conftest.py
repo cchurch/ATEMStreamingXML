@@ -26,6 +26,11 @@ def main():
 
 
 @pytest.fixture
+def version():
+    return ATEMStreamingXML.__version__
+
+
+@pytest.fixture
 def tmp_streaming_xml(tmp_path):
     tmp_file = os.path.join(str(tmp_path), 'Streaming.xml')
     os.environ['ATEM_STREAMING_XML'] = str(tmp_file)

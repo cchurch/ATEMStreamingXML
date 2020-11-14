@@ -231,7 +231,15 @@ def update_streaming_xml(**kwargs):
 
 
 def main(*args):
-    parser = argparse.ArgumentParser(description='Modify ATEM Mini Pro Streaming.xml.')
+    parser = argparse.ArgumentParser(
+        description='Modify ATEM Mini Pro Streaming.xml.',
+    )
+    parser.add_argument(
+        '-V',
+        '--version',
+        action='version',
+        version='%(prog)s {}'.format(__version__),
+    )
     parser.add_argument(
         '-S',
         '--service',
